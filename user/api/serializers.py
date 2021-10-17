@@ -8,6 +8,10 @@ from user.models import CustomUser
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
+    """
+     a serializer for Custom User model
+    """
+
     username = serializers.CharField(write_only=True, required=True, style={'placeholder': 'Username'})
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password],
                                      style={'input_type': 'password', 'placeholder': 'Password'})
@@ -32,6 +36,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
         return customuser
 
+    #custom validation for user register
     def validate(self, attrs):
         if CustomUser.objects.filter(username=attrs['username']).exists():
             raise serializers.ValidationError({"username": "This username is used!"})
