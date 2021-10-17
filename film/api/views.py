@@ -28,7 +28,7 @@ class RateFilm(generics.CreateAPIView):
         serializer = self.get_serializer()
         return Response(serializer.data)
 
-    def post(self,request):
+    def post(self, request):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -42,19 +42,7 @@ class SearchFilm(generics.ListAPIView):
     search films with fields : name , director , description
     """
 
-    search_fields = ['name','director','description']
+    search_fields = ['name', 'director', 'description']
     filter_backends = (filters.SearchFilter,)
     queryset = Film.objects.all()
     serializer_class = FilmSerializer
-
-
-
-
-
-
-
-
-
-
-
-
