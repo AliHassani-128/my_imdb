@@ -22,6 +22,9 @@ class Film(models.Model):
         else:
             return 0
 
+    def __str__(self):
+        return f'{self.name}'
+
 
 class Film_Rate_User(models.Model):
     film =  models.ForeignKey(Film,on_delete=models.CASCADE,related_name='rate_film')
