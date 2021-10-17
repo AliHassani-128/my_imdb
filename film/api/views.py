@@ -1,8 +1,10 @@
-from rest_framework import generics
+from itertools import chain
+
+from django.db.models import Q
+from rest_framework import generics, filters
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
-from film.api.serializers import FilmSerializer, FilmRateSerializer
+from film.api.serializers import FilmSerializer, FilmRateSerializer, SearchSerializer
 from film.models import Film, Film_Rate_User
 
 
@@ -27,6 +29,17 @@ class RateFilm(generics.CreateAPIView):
             return Response({'Your vote has been saved'})
         else:
             return Response(serializer.errors)
+
+
+class SearchFilm(generics.ListAPIView):
+    search_fields = ['name','director','description']
+    filter_backends = (filters.SearchFilter,)
+    queryset = Film.objects.all()
+    serializer_class = FilmSerializer
+
+
+
+
 
 
 
