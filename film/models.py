@@ -26,7 +26,12 @@ class Film(models.Model):
         return f'{self.name}'
 
 
+
+
 class Film_Rate_User(models.Model):
+    """
+    an associate model for rate to a film with comment and a user who can rate
+    """
     film =  models.ForeignKey(Film,on_delete=models.CASCADE,related_name='rate_film')
     rate = models.IntegerField(default=0)
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
