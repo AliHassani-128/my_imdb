@@ -20,7 +20,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('user/',include('user.api.urls')),
-    path('films/',include('film.api.urls')),
+    path('api/v1/user/',include('user.api.urls')),
+    path('api/v1/films/',include('film.api.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
