@@ -9,11 +9,17 @@ from film.models import Film, Film_Rate_User
 
 
 class FilmView(generics.ListAPIView):
+    """
+    view for show all films and ordered by publish date
+    """
     queryset = Film.objects.all().order_by('pub_date')
     serializer_class = FilmSerializer
 
 
 class RateFilm(generics.CreateAPIView):
+    """
+    view for rate to films and set comment this view is for Film_Rate_User model
+    """
     model = Film_Rate_User
     serializer_class = FilmRateSerializer
     permission_classes = (IsAuthenticated,)
@@ -32,6 +38,10 @@ class RateFilm(generics.CreateAPIView):
 
 
 class SearchFilm(generics.ListAPIView):
+    """
+    search films with fields : name , director , description
+    """
+
     search_fields = ['name','director','description']
     filter_backends = (filters.SearchFilter,)
     queryset = Film.objects.all()
