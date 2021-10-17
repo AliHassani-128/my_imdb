@@ -6,7 +6,6 @@ from rest_framework.exceptions import ValidationError
 from user.models import CustomUser
 
 
-
 class CustomUserSerializer(serializers.ModelSerializer):
     """
      a serializer for Custom User model
@@ -22,21 +21,20 @@ class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         depth = 1
-        fields = ['username','first_name','last_name','password','password_again','email']
+        fields = ['username', 'first_name', 'last_name', 'password', 'password_again', 'email']
 
     def create(self, validated_data):
 
         customuser = CustomUser.objects.create(username=validated_data['username'],
-                                           first_name=validated_data['first_name'],
-                                           last_name=validated_data['last_name'],
-                                           password=make_password(validated_data['password']),
-                                           email=validated_data['email'],
-                                           )
-
+                                               first_name=validated_data['first_name'],
+                                               last_name=validated_data['last_name'],
+                                               password=make_password(validated_data['password']),
+                                               email=validated_data['email'],
+                                               )
 
         return customuser
 
-    #custom validation for user register
+    # custom validation for user register
     def validate(self, attrs):
         if CustomUser.objects.filter(username=attrs['username']).exists():
             raise serializers.ValidationError({"username": "This username is used!"})
@@ -74,4 +72,3 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError('User is disabled.')
 
         return {'user': user}
-
