@@ -13,7 +13,6 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'my_imdb.settings')
 
 app = Celery('send_mail')
 
-
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
 # Load task modules from all registered Django app configs.
@@ -22,13 +21,14 @@ app.autodiscover_tasks()
 logger = get_task_logger(__name__)
 
 
-
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
     # send email every 24 hours
     sender.add_periodic_task(24, send_mail_user.s(), name='add every 24')
 
+
 from django.core.mail import send_mail
+
 
 @app.task
 def send_mail_user():
@@ -44,4 +44,3 @@ def send_mail_user():
             recipient_list=[user.email],
             fail_silently=False,
         )
-
