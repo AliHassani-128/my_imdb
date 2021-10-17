@@ -16,7 +16,7 @@ class CustomUserCreate(generics.CreateAPIView):
 
     def get(self, request):
         serializer = self.get_serializer()
-        return Response({'serializer': serializer})
+        return Response(serializer.data)
 
     def post(self, request):
         serializer = CustomUserSerializer(data=request.data)
@@ -24,7 +24,6 @@ class CustomUserCreate(generics.CreateAPIView):
             return Response({'serializer': serializer, 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         else:
             serializer.save()
-            # messages.success(request, 'Your account has been successfully registered. Please login to continue'))
             return Response({'Your account has been successfully registered. Please login to continue'})
 
     def perform_create(self, serializer):
@@ -40,18 +39,16 @@ class CustomUserLogin(generics.CreateAPIView):
 
     def get(self, request, *args, **kwargs):
         serializer = self.get_serializer()
-        return Response({'serializer': serializer})
+        return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
 
         serializer = self.get_serializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             login(request, serializer.validated_data['user'])
-            if request.data['next']:
-                return HttpResponseRedirect(redirect_to=request.data['next'])
-            return redirect('core:index')
+            return Response('successfully logged in')
         else:
-            return Response({'serializer': serializer, 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors)
 
 
 class LogoutView(APIView):
@@ -60,4 +57,4 @@ class LogoutView(APIView):
             return Response({'error': 'just logged in user can log out'}, status=status.HTTP_400_BAD_REQUEST)
 
         logout(request)
-        return redirect('core:index')
+        return Response('successfully log out')
