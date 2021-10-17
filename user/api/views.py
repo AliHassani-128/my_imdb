@@ -1,8 +1,5 @@
-from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import AnonymousUser
-from django.http import HttpResponseRedirect
-from django.shortcuts import redirect
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
